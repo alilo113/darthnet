@@ -1,24 +1,34 @@
 #!/bin/bash
 
-subdomains_discovery(){
-    read -p "Enter the domain: " domain
-    echo "Starting subdomain discovery for $domain..."
-    # Using subfinder for subdomain discovery
-    subfinder -d $domain -o subs.txt
-    echo "Subdomain discovery completed. Results saved in subs.txt"
+domain=$1
+
+if [ -z "$domain" ]; then
+  echo "Usage: ./discovery.sh <domain>"
+  exit 1
+fi
+
+mkdir -p ../data/discovery
+
+subdomains_discovery() {
+    echo "[+] Subdomain discovery for $domain"
+    subfinder -d "$domain" -silent > ../data/discovery/${domain}_subs.txt
 }
 
-live_subdomains_discovery(){
-    echo "Checking for live subdomains..."
-    # Using httpx to check for live subdomains
-    httpx -l subs.txt -sc -fc 400,404,500 -o live.txt
-    echo "Live subdomain discovery completed. Results saved in live.txt"
+live_subdomains_discovery() {
+    echo "[+] Checking live subdomains"
+    httpx -silent -l ../data/discovery/${domain}_subs.txt \
+      -sc -title -tech-detect \
+      > ../data/discovery/${domain}_fingerprint.txt
+
+    awk '{print $1}' ../data/discovery/${domain}_fingerprint.txt \
+      > ../data/discovery/${domain}_live.txt
 }
 
-fingerprinting(){
-    echo "Starting fingerprinting of live subdomains..."
-    # Using nuclei for fingerprinting
-    nuclei -l live.txt -o fingerprints.txt
-    echo "Fingerprinting completed. Results saved in fingerprints.txt"
-
+fingerprinting() {
+    echo "[+] Fingerprinting completed via httpx output"
 }
+
+# ---- EXECUTION ORDER ----
+subdomains_discovery
+live_subdomains_discovery
+fingerprinting
