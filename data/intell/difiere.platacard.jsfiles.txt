@@ -1,0 +1,7 @@
+https://difiere.platacard.mx
+https://difiere.platacard.mx/runtime.563d113f0df211d4.js
+https://difiere.platacard.mx/assets/favicon/favicon-files/site.webmanifest
+https://difiere.platacard.mx/main.03fedd8e4c33fb4b.js
+https://difiere.platacard.mx/polyfills.580856b170a459b4.js
+https://difiere.platacard.mx/styles.2d3901f43325af29.css
+https://difiere.platacard.mx/es/
