@@ -35,3 +35,39 @@ extract_secrets() {
         ../data/intel/js_files.txt \
         > ../data/intel/js_secrets.json
 }
+
+extract_query_parameters(){
+    echo "[+] Extracting query parameters from JavaScript files"
+
+    cat ../data/intel/js_files.txt \
+        | while read -r js; do
+            curl -s "$js"
+        done \
+        | grep -Eo '([?&][a-zA-Z0-9_=-]+)' \
+        | sort -u \
+        > ../data/intel/js_query_parameters.txt
+}
+
+extract_api_routes(){
+    echo "[+] Extracting API routes from javaScript files"
+
+    cat ../data/intel/js_files.txt \ 
+        | while read -r js; do
+            curl -s "$js"
+        done \
+        | grep -Eo '(/api/[a-zA-Z0-9_/?=&-]+)' \
+        | sort -u \
+        > ../data/intel/js_api_routes.txt
+}
+
+extract_json_keys(){
+    echo "[+] Extracting JSON keys from JavaScript files"
+
+    cat ../data/intel/js_files.txt \
+        | while read -r js; do
+            curl -s "$js"
+        done \ 
+        | grep -Eo '"([a-zA-Z0-9_]+)"\s*:' \
+        | sort -u \
+        > ../data/intel/js_json_keys.txt
+}
