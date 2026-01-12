@@ -14,6 +14,18 @@ review_webserver_metadata_for_information_leakage(){
         | sed 's/Disallow: //' \
         | sort -u \
         > ../data/intel/robots_disallowed_paths.txt
+
+    echo "[+] Reviewing webserver metadata for information leakage from sitmap.xml"
+    cat ../data/discovery/*_live.txt \
+        | while read -r url; do
+            sitemap_url="${url%/}/sitemap.xml"
+            echo "[*] Fetching $sitemap_url"
+            wget --no-verbose "$sitemp_url" && head -n8 sitemap.xml
+        done \ 
+        | grep -Eo '<loc>(http[s]?://[a-zA-Z0-9_./?-]+)</loc>' \
+        | sed 's/<loc>//;s/<\/loc>//' \
+        | sort -u \
+        > ../data/intel/sitemap_urls.txt
 }
 
 collect_js_files() {
