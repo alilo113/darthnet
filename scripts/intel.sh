@@ -2,6 +2,14 @@
 
 mkdir -p ../data/intel
 
+review_webserver_metadata_for_information_leakage(){
+    echo "[+] Reviewing webserver metadata for information leakage"
+    cat ../data/discovery/*_nmap.txt \ 
+        | grep -Ei 'server:|x-powered-by:|via:' \
+        | sort -u \
+        > ../data/intel/webserver_metadata.txt
+}
+
 collect_js_files() {
     echo "[+] Collecting JavaScript files"
 
