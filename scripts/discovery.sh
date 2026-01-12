@@ -24,8 +24,11 @@ live_subdomains_discovery() {
       > ../data/discovery/${domain}_live.txt
 }
 
-fingerprinting() {
-    echo "[+] Fingerprinting completed via httpx output"
+fingerprint_webservers(){
+    echo "[+] Fingerprinting web servers"
+    nmap -iL ../data/discovery/${domain}_live.txt \
+      -p 80,443,8080,8443 \
+      --open -sV -oN ../data/discovery/${domain}_nmap.txt
 }
 
 # ---- EXECUTION ORDER ----
