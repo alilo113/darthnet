@@ -3,11 +3,17 @@
 mkdir -p ../data/intel
 
 review_webserver_metadata_for_information_leakage(){
-    echo "[+] Reviewing webserver metadata for information leakage"
-    cat ../data/discovery/*_nmap.txt \ 
-        | grep -Ei 'server:|x-powered-by:|via:' \
+    echo "[+] Reviewing webserver metadata for information leakage from robots.txt and nmap scans"
+    cat ../data/discovery/*_live.txt \
+        | while read -r url; do
+            robots_url="${url%/}/robots.txt"
+            echo "[*] Fetching $robots_url"
+            curl -O -Ss "$robots_url"
+        done \
+        | grep -Eo 'Disallow: (/[a-zA-Z0-9_/-]+)' \
+        | sed 's/Disallow: //' \
         | sort -u \
-        > ../data/intel/webserver_metadata.txt
+        > ../data/intel/robots_disallowed_paths.txt
 }
 
 collect_js_files() {
