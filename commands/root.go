@@ -5,7 +5,7 @@ import (
 )
 
 var (
-	discovery string
+	discovery bool
 )
 
 var rootCmd = &cobra.Command{
@@ -20,5 +20,5 @@ var rootCmd = &cobra.Command{
 }
 
 func init(){
-	rootCmd.PersistentFlags().StringVarP(&discovery, "discovery", "d", "", "Excute the discovery shell script")
+	rootCmd.PersistentFlags().BoolVarP(&discovery, "discovery", "d", false, "Excute the discovery shell script")
 }
