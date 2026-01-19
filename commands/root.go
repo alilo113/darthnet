@@ -6,6 +6,7 @@ import (
 
 var (
 	discovery bool
+	intel bool
 )
 
 var rootCmd = &cobra.Command{
@@ -16,9 +17,15 @@ var rootCmd = &cobra.Command{
 			runDiscoveryScript(discovery)
 			return
 		}
+
+		if intel{
+			runIntelScript(intel)
+			return	
+		}
 	}
 }
 
 func init(){
 	rootCmd.PersistentFlags().BoolVarP(&discovery, "discovery", "d", false, "Excute the discovery shell script")
+	rootCmd.PersistentFlags().BoolVarP(&intel, "intel", "i", false, "Excute the intell shell script")
 }
