@@ -7,6 +7,7 @@ import (
 var (
 	discovery bool
 	intel bool
+	fuzz bool
 )
 
 var rootCmd = &cobra.Command{
@@ -22,10 +23,16 @@ var rootCmd = &cobra.Command{
 			runIntelScript(intel)
 			return	
 		}
+
+		if fuzz{
+			runFuzzScript(fuzz)
+			return
+		}
 	}
 }
 
 func init(){
 	rootCmd.PersistentFlags().BoolVarP(&discovery, "discovery", "d", false, "Excute the discovery shell script")
 	rootCmd.PersistentFlags().BoolVarP(&intel, "intel", "i", false, "Excute the intell shell script")
+	rootCmd.PresistentFlags().BoolVarP(&fuzz, "fuzz", "f", false, "Excute the fuzzing shell script")
 }
